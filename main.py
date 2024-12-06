@@ -1,10 +1,12 @@
 import pygame
-from functs import get_player_sprite
+from functs import get_player_sprite, get_bill_sprite
 
-SPEED = 100
+SPEED = 300
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 running = True
 dt = 0
@@ -12,12 +14,21 @@ player_pos = [100, 100] # (x, y) position of player
 
 # load sprites
 player_sprites = pygame.image.load('sprites/PlayerSprites.png').convert_alpha()
+bill_sprite = pygame.image.load('sprites/BillsHouse.png').convert_alpha()
 downs = [get_player_sprite(player_sprites, 8+i+i*16, 42, 16, 32) for i in range(3)]
 ups = [get_player_sprite(player_sprites, 8+i+i*16, 75, 16, 32) for i in range(3)]
 lefts = [get_player_sprite(player_sprites, 8+i+i*16, 108, 16, 32) for i in range(3)]
 rights = [get_player_sprite(player_sprites, 8+i+i*16, 141, 16, 32) for i in range(3)]
 step = 1
 last_dir = downs[step]
+bill_house = get_bill_sprite(bill_sprite, 0, 0, 250, 170)
+bill_house = pygame.transform.scale(bill_house, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# Scale each sprite and update the list
+for sprites in [downs, ups, lefts, rights]:
+    for i in range(len(sprites)):
+        sprites[i] = pygame.transform.scale(sprites[i], (80, 160)) # 5x the normal size (16, 32)
+        sprites[i].set_colorkey((255, 127, 39))
 
 while running:
     # pygame.QUIT event means the user clicked X to close your window
@@ -25,7 +36,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill('black')
+    screen.blit(bill_house, (0, 0))
     screen.blit(last_dir, player_pos)
     
     # Movement logic

@@ -15,3 +15,8 @@ def get_player_sprite(sheet, x, y, width, height):
     sprite.set_colorkey((255, 127, 39))
     sprite.blit(sheet, (0, 0), (x, y, width, height))
     return sprite
+
+def get_bill_sprite(sheet, x, y, width, height):
+    sprite = pygame.Surface((width, height), pygame.SRCALPHA)
+    sprite.blit(sheet, (0, 0), (x, y, width, height))
+    return sprite
